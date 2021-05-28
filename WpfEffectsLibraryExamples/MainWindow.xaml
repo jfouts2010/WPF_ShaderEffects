@@ -1,0 +1,58 @@
+﻿<Window x:Class="WpfEffectsLibraryExamples.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:effects="clr-namespace:ANEffectsLibrary;assembly=ANEffectsLibrary"
+        Title="MainWindow"
+        Height="1400"
+        Width="2000"
+        WindowState="Maximized"
+        Top="0"
+        Left="100">
+    <Window.Resources>
+        <Style x:Key="CheckBoxClickAnimation"
+               TargetType="CheckBox">
+            <Setter Property="Background"
+                    Value="BlueViolet" />
+            <Setter Property="Content"
+                    Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid Background="{TemplateBinding Background}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <Style x:Key="BorderSimplexNoise"
+               TargetType="Border">
+
+        </Style>
+    </Window.Resources>
+
+    <!-- CONTENT -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+
+        </Grid.ColumnDefinitions>
+        <Image Source="C:\Users\John\Documents\1.png">
+            <Image.Effect>
+                <effects:Crt_tvEffect></effects:Crt_tvEffect>
+            </Image.Effect>
+        </Image>
+        <!--<TextBox Background="Black" Foreground="Green" FontSize="50" Text="hello world">
+            <TextBox.Effect>
+                <effects:Crt_tvEffect>
+                </effects:Crt_tvEffect>
+            </TextBox.Effect>
+        </TextBox>-->
+
+    </Grid>
+
+
+</Window>

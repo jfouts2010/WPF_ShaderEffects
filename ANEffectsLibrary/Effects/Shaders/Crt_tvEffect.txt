@@ -1,0 +1,65 @@
+﻿// ============================================================
+//   Contributed by Rene Schulte
+//   Copyright (c) 2009 Rene Schulte
+//   http://kodierer.blogspot.com/2009/10/read-between-pixels-hlsl-kill-pixel.html
+// ====================================================
+
+/// <description>Pixel shader that samples the color from an image and draws every odd pixel transparent.</description>
+sampler2D inputSampler : register(S0);
+
+/// <summary>The Size of the texture.</summary>
+/// <minValue>0,0</minValue>
+/// <maxValue>2048,2048</maxValue>
+/// <defaultValue>512,512</defaultValue>
+float2 TextureSize : register(C0);
+sampler2D Sampler = sampler_state
+{
+    Texture = <SpriteTexture>;
+    AddressU = clamp;
+    AddressV = clamp;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
+};
+float RescaleInRange(float value, float oldMin, float oldMax, float newMin, float newMax) {
+    if (value < oldMin) value = oldMin;
+    else if (value > oldMax) value = oldMax;
+    return ((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
+}
+float4 main(float2 texCoord : TEXCOORD) : COLOR
+{
+	// Default color is fully transparent
+	float4 color = 0;
+
+	float w = TextureSize.x;
+	float h = TextureSize.y;
+	float x = RescaleInRange(texCoord.x, 0, 1, 0, w);
+	float y = RescaleInRange(texCoord.y, 0, 1, 0, h);
+	float4 colorAtPos = tex2D( inputSampler, texCoord );
+	if(fmod(y,4)>=3 )
+    {
+    color = float4(0,0,0,1);
+    }
+    else
+      {
+      
+	if(fmod(x, 4) >= 0 && fmod(x, 4) < 1)
+	{
+		color = float4(colorAtPos.r,0,0,1);
+	}
+	if(fmod(x, 4) >= 1 && fmod(x, 4) < 2)
+	{
+		color = float4(0,colorAtPos.g,0,1);
+	}
+	if(fmod(x, 4) >= 2 && fmod(x, 4) < 3)
+	{
+		color = float4(0,0,colorAtPos.b,1);
+	}
+	if(fmod(x, 4) >= 3)
+	{
+		color = float4(0,0,0,1);
+	}
+	}
+	return color;
+}
+
